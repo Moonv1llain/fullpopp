@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0E0905">
+  <title>FullPopp™ | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,900;1,700&family=DM+Serif+Display:ital@0;1&display=swap">
+  <link rel="stylesheet" href="shop.css">
+  <style>
+    /* dashboard-only body reset */
+    body { background: var(--bg); color: var(--cream); cursor: auto; padding-bottom: 44px; }
+  </style>
+</head>
+<body class="dash-body">
+
+  <div class="grain"></div>
+
+  <!-- ── LOCK SCREEN ──────────────────────────────────────── -->
+  <div class="lock-screen" id="lockScreen">
+    <div class="lock-logo">Full<span>Popp</span>™</div>
+    <div style="text-align:center">
+      <div class="lock-label" style="margin-bottom:18px">Brand Dashboard — Enter Password</div>
+      <input
+        class="lock-input" id="lockInput"
+        type="password" placeholder="Password"
+        onkeydown="if(event.key==='Enter')checkPass()"
+        autocomplete="current-password"
+      >
+    </div>
+    <button class="lock-btn" onclick="checkPass()">Enter →</button>
+    <div class="lock-error" id="lockError"></div>
+    <p style="font-size:10px;letter-spacing:0.12em;color:var(--muted);margin-top:8px;">
+      To change the password, edit <code style="color:var(--gold)">DASHBOARD_PASS</code> in dashboard.html
+    </p>
+  </div>
+
+  <!-- ── DASHBOARD ─────────────────────────────────────────── -->
+  <div id="dashApp" style="display:none">
+
+    <nav class="dash-nav">
+      <div class="dash-nav-logo">Full<span>Popp</span>™</div>
+      <div class="dash-nav-right">
+        <span class="dash-nav-badge">Orders</span>
+        <button class="dash-logout-btn" onclick="logout()">Log Out</button>
+      </div>
+    </nav>
+
+    <div class="dash-inner">
+
+      <!-- Stats -->
+      <div class="dash-stats" id="dashStats">
+        <div class="dash-stat"><div class="dash-stat-n">—</div><div class="dash-stat-l">Total Orders</div></div>
+        <div class="dash-stat"><div class="dash-stat-n c-red">—</div><div class="dash-stat-l">New / Pending</div></div>
+        <div class="dash-stat"><div class="dash-stat-n c-gold">—</div><div class="dash-stat-l">Est. Revenue</div></div>
+        <div class="dash-stat"><div class="dash-stat-n">—</div><div class="dash-stat-l">Fulfilled</div></div>
+      </div>
+
+      <!-- Filters -->
+      <div class="dash-filters">
+        <button class="dash-filter active" onclick="setFilter('all', this)">All</button>
+        <button class="dash-filter" onclick="setFilter('new', this)">New</button>
+        <button class="dash-filter" onclick="setFilter('confirmed', this)">Confirmed</button>
+        <button class="dash-filter" onclick="setFilter('fulfilled', this)">Fulfilled</button>
+        <button
+          class="dash-filter"
+          style="margin-left:auto;border-color:rgba(212,130,10,0.4);color:var(--gold)"
+          onclick="loadOrders()"
+        >↻ Refresh</button>
+      </div>
+
+      <div class="dash-section-label" id="orderCount">Loading orders…</div>
+      <div class="dash-orders" id="orderList"></div>
+
+    </div>
+
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar">
+    <div class="marquee-track">
+      <span>FULLPOPP™ DASHBOARD&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>CLASSIC FLAVOR&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>UNAPOLOGETICALLY COLD&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>200MG CAFFEINE&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>FULLPOPP™ DASHBOARD&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>CLASSIC FLAVOR&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>UNAPOLOGETICALLY COLD&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>200MG CAFFEINE&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ─── SUPABASE ──────────────────────────────────────────────────
+       Same keys as shop.html
+  ─────────────────────────────────────────────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    // ── CONFIG — change these ──────────────────────────────────────
+    const SUPABASE_URL   = 'https://yrgpkotrxrvuaphdczno.supabase.co';
+    const SUPABASE_KEY   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlyZ3Brb3RyeHJ2dWFwaGRjem5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzIwMjksImV4cCI6MjA4OTYwODAyOX0.aoKg3rMUj6hE9bSRpuXUb06kn6XfbaSK4-fq6U5Rqjc';
+    const DASHBOARD_PASS = 'fullpopp2026'; // ← change this to your password
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // ── AUTH ──────────────────────────────────────────────────────
+    function checkPass() {
+      const val = document.getElementById('lockInput').value;
+      if (val === DASHBOARD_PASS) {
+        sessionStorage.setItem('fp_auth', '1');
+        document.getElementById('lockScreen').classList.add('hidden');
+        document.getElementById('dashApp').style.display = 'block';
+        loadOrders();
+      } else {
+        document.getElementById('lockError').textContent = 'Incorrect password.';
+        document.getElementById('lockInput').value = '';
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem('fp_auth');
+      location.reload();
+    }
+
+    // Check if already authed this session
+    if (sessionStorage.getItem('fp_auth') === '1') {
+      document.getElementById('lockScreen').classList.add('hidden');
+      document.getElementById('dashApp').style.display = 'block';
+    }
+
+    // ── STATE ─────────────────────────────────────────────────────
+    let allOrders   = [];
+    let activeFilter = 'all';
+
+    // ── LOAD ORDERS ───────────────────────────────────────────────
+    async function loadOrders() {
+      document.getElementById('orderCount').textContent = 'Loading…';
+      const { data, error } = await sb
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        document.getElementById('orderCount').textContent = 'Error loading orders.';
+        console.error(error);
+        return;
+      }
+      allOrders = data || [];
+      renderStats();
+      renderOrders();
+    }
+
+    // ── STATS ─────────────────────────────────────────────────────
+    function renderStats() {
+      const total     = allOrders.length;
+      const pending   = allOrders.filter(o => o.status === 'new').length;
+      const fulfilled = allOrders.filter(o => o.status === 'fulfilled').length;
+      const revenue   = allOrders
+        .filter(o => o.status !== 'cancelled')
+        .reduce((s, o) => s + (o.total || 0), 0);
+
+      document.getElementById('dashStats').innerHTML = `
+        <div class="dash-stat"><div class="dash-stat-n">${total}</div><div class="dash-stat-l">Total Orders</div></div>
+        <div class="dash-stat"><div class="dash-stat-n c-red">${pending}</div><div class="dash-stat-l">New / Pending</div></div>
+        <div class="dash-stat"><div class="dash-stat-n c-gold">$${revenue.toFixed(2)}</div><div class="dash-stat-l">Est. Revenue</div></div>
+        <div class="dash-stat"><div class="dash-stat-n">${fulfilled}</div><div class="dash-stat-l">Fulfilled</div></div>
+      `;
+    }
+
+    // ── FILTER ────────────────────────────────────────────────────
+    function setFilter(f, btn) {
+      activeFilter = f;
+      document.querySelectorAll('.dash-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderOrders();
+    }
+
+    // ── RENDER ORDERS ─────────────────────────────────────────────
+    function timeAgo(ts) {
+      if (!ts) return '';
+      const d = (Date.now() - new Date(ts)) / 1000;
+      if (d < 60)    return 'just now';
+      if (d < 3600)  return Math.floor(d / 60) + 'm ago';
+      if (d < 86400) return Math.floor(d / 3600) + 'h ago';
+      return Math.floor(d / 86400) + 'd ago';
+    }
+
+    function renderOrders() {
+      const filtered = activeFilter === 'all'
+        ? allOrders
+        : allOrders.filter(o => o.status === activeFilter);
+
+      document.getElementById('orderCount').textContent =
+        filtered.length + ' order' + (filtered.length !== 1 ? 's' : '');
+
+      const list = document.getElementById('orderList');
+
+      if (!filtered.length) {
+        list.innerHTML = `
+          <div class="dash-empty">
+            <div class="dash-empty-title">No Orders Yet</div>
+            <p>${activeFilter === 'all' ? 'Pre-orders will appear here once customers submit the shop form.' : 'No ' + activeFilter + ' orders right now.'}</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = filtered.map(o => `
+        <div class="dash-order status-${o.status}" id="order-${o.id}">
+          <div class="do-top">
+            <div>
+              <div class="do-name">${escHtml(o.name)}</div>
+              <div class="do-ref">${escHtml(o.ref || o.id)} · ${timeAgo(o.created_at)}</div>
+            </div>
+            <span class="do-status ${o.status}">${o.status}</span>
+          </div>
+
+          <div class="do-meta">
+            <span>${escHtml(o.email)}</span>
+            ${o.phone ? `<span>${escHtml(o.phone)}</span>` : ''}
+          </div>
+
+          <div class="do-pack">
+            <span class="do-pack-label">${o.qty}× ${escHtml(o.pack_label)}</span>
+            <span class="do-pack-total">$${(o.total || 0).toFixed(2)}</span>
+          </div>
+
+          ${o.note ? `<div class="do-note">${escHtml(o.note)}</div>` : ''}
+
+          <div class="do-actions">
+            ${o.status === 'new'
+              ? `<button class="do-btn primary" onclick="updateStatus('${o.id}','confirmed')">Confirm Order</button>`
+              : ''}
+            ${o.status === 'confirmed'
+              ? `<button class="do-btn primary" onclick="updateStatus('${o.id}','fulfilled')">Mark Fulfilled</button>`
+              : ''}
+            ${o.status !== 'new'
+              ? `<button class="do-btn" onclick="updateStatus('${o.id}','new')">Reset to New</button>`
+              : ''}
+            <button
+              class="do-btn"
+              onclick="window.location.href='mailto:${encodeURIComponent(o.email)}?subject=Your FullPopp Pre-Order ${encodeURIComponent(o.ref || '')}'"
+            >Email Customer</button>
+            <button class="do-btn danger" style="margin-left:auto" onclick="deleteOrder('${o.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── UPDATE STATUS ─────────────────────────────────────────────
+    async function updateStatus(id, status) {
+      const { error } = await sb
+        .from('orders')
+        .update({ status })
+        .eq('id', id);
+      if (error) { alert('Update failed: ' + error.message); return; }
+      const o = allOrders.find(x => x.id === id);
+      if (o) o.status = status;
+      renderStats();
+      renderOrders();
+    }
+
+    // ── DELETE ────────────────────────────────────────────────────
+    async function deleteOrder(id) {
+      if (!confirm('Delete this order? This cannot be undone.')) return;
+      const { error } = await sb.from('orders').delete().eq('id', id);
+      if (error) { alert('Delete failed: ' + error.message); return; }
+      allOrders = allOrders.filter(x => x.id !== id);
+      renderStats();
+      renderOrders();
+    }
+
+    // ── UTILS ─────────────────────────────────────────────────────
+    function escHtml(s) {
+      if (!s) return '';
+      return String(s)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // Auto-load if already authed
+    if (sessionStorage.getItem('fp_auth') === '1') loadOrders();
+  </script>
+
+</body>
+</html>

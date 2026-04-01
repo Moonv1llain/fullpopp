@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#F5E6C8">
+    <title>FullPopp™ | Ultra Real — Classic Flavor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-wordmark">FULL<span>POPP</span></div>
+        <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderBar"></div></div>
+        <div class="loader-label">Loading Classic Flavor</div>
+    </div>
+
+    <div class="grain"></div>
+
+    <!-- CUSTOM CURSOR (desktop only) -->
+    <div class="cursor-dot"  id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- 3D canvas -->
+    <canvas id="bg"></canvas>
+
+    <!-- TOP NAV -->
+    <nav class="nav">
+        <div class="nav-logo">FullPopp™ <span class="nav-year">/ 2026</span></div>
+        <div class="nav-right">
+            <span class="nav-tag">Classic Flavor</span>
+            <a href="shop.html" class="nav-cta js-hover">Shop ↗</a>
+        </div>
+    </nav>
+
+    <!-- LEFT SIDE PANEL -->
+    <aside class="side-panel">
+
+        <div class="brand-block">
+            <span class="title-eyebrow">Est. 2026 — Classic Flavor</span>
+            <h1 class="pop-title">
+                <span class="word"><span class="word-inner">FULL</span></span>
+                <span class="word"><span class="word-inner">POPP</span></span>
+            </h1>
+            <span class="sub-heading">Unapologetically Cold</span>
+        </div>
+
+        <div class="cta-block">
+            <button class="btn-primary js-hover" onclick="window.location.href='shop.html'">Get Yours →</button>
+            <button class="btn-nutrition" id="nutritionToggle">Nutrition Facts</button>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <span class="stat-num">200<small style="font-size:0.42em;letter-spacing:0">mg</small></span>
+                <span class="stat-label">Caffeine</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">85</span>
+                <span class="stat-label">Calories</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">12<small style="font-size:0.42em;letter-spacing:0">oz</small></span>
+                <span class="stat-label">Per Can</span>
+            </div>
+        </div>
+
+        <div class="ventura-label">Made in Ventura County</div>
+
+        <div class="drag-hint">
+            <div class="drag-line"></div>
+            <span class="drag-label">Drag to rotate</span>
+        </div>
+
+    </aside>
+
+    <!-- Vertical label desktop -->
+    <div class="vertical-label">Classic Flavor — Limited Edition — 2026</div>
+
+    <!-- Scroll indicator desktop -->
+    <div class="scroll-indicator">
+        <div class="scroll-indicator-line"></div>
+        <span class="scroll-indicator-label">Scroll</span>
+    </div>
+
+    <!-- NUTRITION SIDEBAR (desktop) -->
+    <div class="nutrition-sidebar">
+        <div class="fact-header">Nutrition Facts</div>
+        <div class="serving-size">Serving Size 1 Can (355ml)</div>
+        <div class="line-heavy"></div>
+        <div class="fact-row calories-row"><b>Calories</b><span class="cal-num">85</span></div>
+        <div class="line-heavy"></div>
+        <div class="fact-row small-label"><span></span><span>% Daily Value*</span></div>
+        <div class="line-thin"></div>
+        <div class="fact-row"><b>Total Fat</b><span>0g <em>0%</em></span></div>
+        <div class="line-thin"></div>
+        <div class="fact-row"><b>Sodium</b><span>78mg <em>3%</em></span></div>
+        <div class="line-thin"></div>
+        <div class="fact-row"><b>Total Sugar</b><span>22g</span></div>
+        <div class="fact-row sub">Added Sugars<span>44%</span></div>
+        <div class="line-thin"></div>
+        <div class="fact-row highlight-row"><b>Caffeine</b><span>200mg*</span></div>
+        <div class="line-thin"></div>
+        <div class="fact-row"><b>Taurine</b><span>—</span></div>
+        <div class="line-thin"></div>
+        <div class="fact-row"><b>L-Theanine</b><span>—</span></div>
+        <div class="line-heavy"></div>
+        <p class="ingredients"><b>Ingredients:</b> Caffeine, carbonated water, taurine, L-Theanine, sugar, propylene glycol, citric acid, natural flavors.</p>
+        <p class="warning">⚠ HIGH CAFFEINE. NOT FOR CHILDREN.</p>
+        <p class="dv-note">*% Daily Values based on a 2,000 calorie diet.</p>
+    </div>
+
+    <!-- MARQUEE -->
+    <div class="marquee-bar">
+        <div class="marquee-track">
+            <span>ULTRA REAL&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>200MG CAFFEINE&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>FULLPOPP™ 2026&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>UNAPOLOGETICALLY COLD&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>CLASSIC FLAVOR&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>99% RECYCLABLE&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>NATURAL FLAVORS&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>NO CRASH&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>ULTRA REAL&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>200MG CAFFEINE&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>FULLPOPP™ 2026&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>UNAPOLOGETICALLY COLD&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>CLASSIC FLAVOR&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>99% RECYCLABLE&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>NATURAL FLAVORS&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+            <span>NO CRASH&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+        </div>
+    </div>
+
+    <!-- MOBILE SCROLLER -->
+    <div class="mobile-scroller" id="mobileScroller">
+        <div class="mobile-hero-spacer"></div>
+        <div class="mobile-scroll-section">
+            <div class="mobile-nutrition">
+                <div class="fact-header">Nutrition Facts</div>
+                <div class="serving-size">Serving Size 1 Can (355ml)</div>
+                <div class="line-heavy"></div>
+                <div class="fact-row calories-row"><b>Calories</b><span class="cal-num">85</span></div>
+                <div class="line-heavy"></div>
+                <div class="fact-row small-label"><span></span><span>% Daily Value*</span></div>
+                <div class="line-thin"></div>
+                <div class="fact-row"><b>Total Fat</b><span>0g <em>0%</em></span></div>
+                <div class="line-thin"></div>
+                <div class="fact-row"><b>Sodium</b><span>78mg <em>3%</em></span></div>
+                <div class="line-thin"></div>
+                <div class="fact-row"><b>Total Sugar</b><span>22g</span></div>
+                <div class="fact-row sub">Added Sugars<span>44%</span></div>
+                <div class="line-thin"></div>
+                <div class="fact-row highlight-row"><b>Caffeine</b><span>200mg*</span></div>
+                <div class="line-thin"></div>
+                <div class="fact-row"><b>Taurine</b><span>—</span></div>
+                <div class="line-thin"></div>
+                <div class="fact-row"><b>L-Theanine</b><span>—</span></div>
+                <div class="line-heavy"></div>
+                <p class="ingredients"><b>Ingredients:</b> Caffeine, carbonated water, taurine, L-Theanine, sugar, propylene glycol, citric acid, natural flavors.</p>
+                <p class="warning">⚠ HIGH CAFFEINE. NOT FOR CHILDREN.</p>
+                <p class="dv-note">*% Daily Values based on a 2,000 calorie diet.</p>
+            </div>
+            <button class="mobile-shop-btn">Get Yours →</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <span>© 2026 FullPopp™</span>
+      <a href="dashboard.html" class="footer-dash-link">Brand Portal</a>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+    <script>
+    (function () {
+        /* ── LOADER ── */
+        const bar     = document.getElementById('loaderBar');
+        const loader  = document.getElementById('loader');
+        let progress  = 0;
+        const tick = setInterval(() => {
+            progress += Math.random() * 18 + 4;
+            if (progress >= 100) { progress = 100; clearInterval(tick); }
+            bar.style.transform = `scaleX(${progress / 100})`;
+            if (progress === 100) {
+                setTimeout(() => loader.classList.add('hidden'), 320);
+            }
+        }, 80);
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* ── CUSTOM CURSOR ── */
+            const dot  = document.getElementById('cursorDot');
+            const ring = document.getElementById('cursorRing');
+            if (dot && window.matchMedia('(hover: hover)').matches) {
+                let mx = 0, my = 0, rx = 0, ry = 0;
+                document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+                function animateCursor() {
+                    rx += (mx - rx) * 0.14;
+                    ry += (my - ry) * 0.14;
+                    dot.style.left  = mx + 'px';
+                    dot.style.top   = my + 'px';
+                    ring.style.left = rx + 'px';
+                    ring.style.top  = ry + 'px';
+                    requestAnimationFrame(animateCursor);
+                }
+                animateCursor();
+
+                document.querySelectorAll('.js-hover, a, button').forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+                });
+            }
+
+            /* ── MOBILE: fade hero when scrolled ── */
+            const scroller  = document.getElementById('mobileScroller');
+            const sidePanel = document.querySelector('.side-panel');
+            if (scroller && sidePanel && window.matchMedia('(max-width: 768px)').matches) {
+                scroller.addEventListener('scroll', () => {
+                    const t = scroller.scrollTop / window.innerHeight;
+                    sidePanel.style.opacity = Math.max(0, 1 - t * 3);
+                    sidePanel.style.transform = `translateY(${t * 18}px)`;
+                }, { passive: true });
+            }
+        });
+    })();
+    </script>
+
+</body>
+</html>
